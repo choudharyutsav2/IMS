@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #FF6600, #FF0000); /* Dark yellow and red gradient */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #333; /* Dark background for the form */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-align: center;
+            color: #FFD700; /* Gold color for the title */
+        }
+        label {
+            font-weight: 500;
+            color: #FFD700; /* Gold color for labels */
+        }
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        input:focus, select:focus {
+            border-color: #FFD700; /* Gold border on focus */
+            outline: none;
+        }
+        button {
+            background-color: #FFD700; /* Gold color for the button */
+            color: #333;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        button:hover {
+            background-color: #FF8C00; /* Darker gold on hover */
+        }
+        .form-control {
+            background-color: #444; /* Dark background for inputs */
+            color: #fff; /* White text in inputs */
+            border: 1px solid #666; /* Darker border for inputs */
+        }
+        .form-control:focus {
+            border-color: #FF8C00; /* Focus color */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Add Product</h1>
+
+    <!-- Add Product Form -->
+    <form action="/adminPage/addProductForm" method="POST" id="addProduct-Form">
+        <div class="mb-3">
+            <label for="productName" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="productName" name="productName" placeholder="Enter product name" required />
+        </div>
+
+        <!-- Category Dropdown -->
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-control" id="category" name="category" required>
+                <option value="" disabled selected>Select a category</option>
+                <option value="shirt">Shirt</option>
+                <option value="t-shirt">T-shirt</option>
+                <option value="saree">Saree</option>
+                <option value="salwar_suit">Salwar Suit</option>
+                <option value="kurti">Kurti</option>
+                <option value="jeans">Jeans</option>
+                <option value="blouse">Blouse</option>
+                <option value="jacket">Jacket</option>
+                <option value="coat">Coat</option>
+                <option value="leggings">Leggings</option>
+                <option value="skirt">Skirt</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" step="0.01" class="form-control" id="price" name="price" placeholder="Enter price" required />
+        </div>
+        <div class="mb-3">
+            <label for="stock" class="form-label">Stock</label>
+            <input type="number" class="form-control" id="stock" name="stock" placeholder="Enter stock quantity" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Add to Collection</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

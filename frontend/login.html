@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VogueVault Login</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom right, #FFD700, #FF4500);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Login Section Styles */
+        .login-section {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-section h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 28px;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .login-section p {
+            text-align: center;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styles */
+        .login-form {
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .login-form label {
+            color: #FFD700;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .login-form .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            color: #FFD700;
+            border: 1px solid #FF6347;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .login-form .form-control:focus {
+            border-color: #FFD700;
+            box-shadow: 0px 0px 5px rgba(255, 215, 0, 0.8);
+        }
+
+        .login-form button {
+            background: linear-gradient(to right, #FFD700, #FF4500);
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .login-form button:hover {
+            background: linear-gradient(to right, #FF4500, #FFD700);
+        }
+
+        /* Placeholder Text */
+        .login-form .form-control::placeholder {
+            color: #FFD700;
+        }
+
+        /* Registration Link */
+        .registration-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .registration-link a {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .registration-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Slideshow Styles */
+        .slideshow {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .slideshow img {
+            width: 100%;
+            display: none;
+        }
+
+        .slideshow img.active {
+            display: block;
+        }
+    </style>
+    <script>
+        // Slideshow Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const images = document.querySelectorAll('.slideshow img');
+            let currentIndex = 0;
+
+            function showNextImage() {
+                images[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % images.length;
+                images[currentIndex].classList.add('active');
+            }
+
+            setInterval(showNextImage, 3000); // Change image every 3 seconds
+        });
+    </script>
+</head>
+<body>
+<div class="login-section">
+    <h2>VogueVault Login</h2>
+    <p>Access your dashboard to manage dress stocks.</p>
+
+
+
+    <!-- Login form -->
+    <form action="/loginForm" method="POST" class="login-form">
+        <div class="input-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" class="form-control" required>
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" class="form-control" required>
+        </div>
+        <div class="input-group">
+            <label for="role">Role</label>
+            <select id="role" name="role" class="form-control" required>
+                <option value="USER">User</option>
+                <option value="ADMIN">Administrator</option>
+            </select>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- Link to registration page -->
+    <div class="registration-link">
+        <p>New to VogueVault? <a href="/register.html">Create an account</a>.</p>
+    </div>
+</div>
+</body>
+</html>

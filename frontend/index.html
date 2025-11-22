@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VogueVault - Dress Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        /* General body styles with dark yellow-red gradient */
+        body {
+            background: linear-gradient(to right, #ffcc00, #ff3300);
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background-color: #ff3300;
+        }
+
+        .navbar a {
+            color: #ffffff !important;
+        }
+
+        .navbar a:hover {
+            color: #ffd700 !important;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        /* Button styles */
+        .btn-custom {
+            background: linear-gradient(to right, #ffcc00, #ff3300);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background: linear-gradient(to left, #ffcc00, #ff3300);
+        }
+
+        /* Hero section */
+        .hero {
+            background: url('./css/springMain.jpg') no-repeat center center/cover;
+            height: 100vh;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        /* Product section with hover effects */
+        .product-section img {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-section img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-hover {
+            position: relative;
+        }
+
+        .product-hover:hover::after {
+            content: attr(data-hover);
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #4d4d4d;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reviews section */
+        .reviews {
+            padding: 50px 20px;
+            background: #ffcc00;
+            color: #4d4d4d;
+            text-align: center;
+        }
+
+        .review-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 15px 0;
+        }
+
+        /* Footer section */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #ff3300;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">VogueVault - made stock management effortless.</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#photos">Photos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#reviews">Reviews</a></li>
+                <li class="nav-item"><a class="btn btn-light-brown" href="./register.html" role="button">Sign Up</a></li>
+                <li class="nav-item"><a class="btn btn-light-brown" href="./login.html" role="button">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Welcome to VogueVault</h1>
+    <p>Your ultimate solution for managing dress stocks seamlessly.</p>
+</section>
+
+<!-- Product Section -->
+<section id="photos" class="product-section container mt-5">
+    <h2 class="text-center">Our Collection</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="product-hover" data-hover="A versatile garment worn by men and women, shirts are perfect for formal and casual occasions. Made from fabrics like cotton, polyester, or linen, they come in various styles such as button-down, polo, or t-shirts. Comfortable and stylish, shirts are an essential wardrobe staple.">
+                <img src="./css/shirtt.png" alt="Shirt">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="product-hover" data-hover="A traditional and elegant Indian attire, the saree is a long fabric draped gracefully around the body. Made from materials like silk, cotton, or chiffon, it symbolizes culture and heritage. Worn on festive and formal occasions, sarees come in diverse patterns, colors, and designs.">
+                <img src="./css/shirtt2.png" alt="Saree">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="product-hover" data-hover="A suit is a refined, formal outfit typically comprising a blazer, trousers, and a matching vest. Designed to exude sophistication, it is often made from premium fabrics like wool or blended textiles. Perfect for professional settings and ceremonies, it embodies class and confidence.">
+                <img src="./css/shirt3.png" alt="Court Suit">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reviews Section -->
+<!-- Reviews Section -->
+<section id="reviews" class="reviews mt-5">
+    <h2>Customer Reviews</h2>
+    <div class="container">
+        <div class="review-card">
+            <p>"Highly recommend VogueVault for businesses!"</p>
+            <footer>- Raunak</footer>
+            <div>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="far fa-star text-warning"></span>
+            </div>
+        </div>
+        <div class="review-card">
+            <p>"Amazing platform for dress stock management!"</p>
+            <footer>- Utsav kr. Choudhary</footer>
+            <div>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star-half-alt text-warning"></span>
+            </div>
+        </div>
+        <div class="review-card">
+            <p>"Seamless and user-friendly design."</p>
+            <footer>- Manish Mishra</footer>
+            <div>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="far fa-star text-warning"></span>
+            </div>
+        </div>
+        <div class="review-card">
+            <p>"VogueVault made inventory management effortless."</p>
+            <footer>- Yash Yadav</footer>
+            <div>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+            </div>
+        </div>
+        <div class="review-card">
+            <p>"The best inventory solution I've used!"</p>
+            <footer>- Abu Samar</footer>
+            <div>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+            </div>
+        </div>
+        <div class="review-card">
+            <p>"Perfect for managing both small and large inventories."</p>
+            <footer>- Priyanshu Rajak</footer>
+            <div>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star text-warning"></span>
+                <span class="fas fa-star-half-alt text-warning"></span>
+                <span class="far fa-star text-warning"></span>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+
+<!-- Footer -->
+<footer class="footer bg-dark text-light py-4">
+    <div class="container">
+        <div class="row">
+            <!-- Contact Information -->
+            <div class="col-md-4">
+                <h4>Contact Us</h4>
+                <div>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p class="details">voguevault</p>
+                    <p class="details">Khandagiri, Bhubaneswar, India</p>
+                </div>
+                <div>
+                    <i class="fas fa-phone"></i>
+                    <p class="details">+123-456-7890</p>
+                </div>
+                <div>
+                    <i class="fas fa-envelope"></i>
+                    <p class="details">info@inventory.com</p>
+                </div>
+            </div>
+
+            <!-- Emails Section -->
+            <div class="col-md-4">
+                <h4>Emails</h4>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-envelope"></i> voguevault@gmail.com</li>
+                    <li><i class="fas fa-envelope"></i> voguevault.support@gmail.com</li>
+                    <li><i class="fas fa-envelope"></i> feedback.voguevault@gmail.com</li>
+                    <li><i class="fas fa-envelope"></i> services.voguevault@gmail.com</li>
+                </ul>
+            </div>
+
+            <!-- Social Media Links -->
+            <div class="col-md-4">
+                <h4>Follow Us On</h4>
+                <ul class="list-unstyled">
+                    <li><i class="fab fa-twitter"></i> Twitter</li>
+                    <li><i class="fab fa-instagram"></i> Instagram</li>
+                    <li><i class="fab fa-linkedin"></i> LinkedIn</li>
+                    <li><i class="fab fa-facebook"></i> Facebook</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr class="bg-light">
+
+        <!-- Footer Bottom -->
+        <div class="text-center mt-3">
+            <p>© 2024 VogueVault. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
