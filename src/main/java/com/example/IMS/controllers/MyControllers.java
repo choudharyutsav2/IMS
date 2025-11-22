@@ -13,8 +13,15 @@ public class MyControllers {
     @Autowired
     private UserService userService;
 
+    // Provide a default user model for views that need it
+    @ModelAttribute("user")
+    public User userModel() {
+        return new User();
+    }
+
     @GetMapping("/regPage")
     public String openRegPage(Model model) {
+        // optional since @ModelAttribute above already provides "user"
         model.addAttribute("user", new User());
         return "register";
     }
@@ -53,21 +60,24 @@ public class MyControllers {
             return "login";
         }
     }
-    
+
     @GetMapping("/register.html")
-    public String showRegisterPage() {
+    public String showRegisterPage(Model model) {
+        // ensure model contains "user" so Thymeleaf's th:object="${user}" works
+        model.addAttribute("user", new User());
         return "register"; // Thymeleaf resolves to templates/register.html
     }
+
     @GetMapping("/update.html")
     public String showUpdatePage() {
-        return "update"; // Thymeleaf resolves to templates/register.html
+        return "update";
     }
+
     @GetMapping("/addProduct.html")
     public String showaddProductPage() {
-        return "addProduct"; // Thymeleaf resolves to templates/register.html
+        return "addProduct";
     }
-    
-    
+
     @GetMapping("/InventoryPage")
     public String openInventoryPage(Model model) {
         return "inventory";
