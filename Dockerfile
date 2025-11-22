@@ -1,4 +1,5 @@
 # multi-stage Dockerfile: build with Maven, run with JRE
+# (Includes a temporary debug step to show the produced jar in build logs)
 
 # Stage 1: build the jar
 FROM maven:3.9.4-eclipse-temurin-17 AS build
@@ -15,11 +16,15 @@ RUN mvn -B -ntp dependency:go-offline
 COPY . .
 RUN mvn -B -ntp -DskipTests clean package
 
+# --- DEBUG STEP: list contents of target to show the jar name in logs ---
+# Remove this RUN line once build is confirmed successful to keep image clean.
+RUN ls -la /app/target || true
+
 # Stage 2: runtime image
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
-# Copy the jar produced in stage 1 into the WORKDIR as app.jar
+# Copy the jar produced in stage 1 into the WORKDIR as app.jar (glob handles different names)
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
