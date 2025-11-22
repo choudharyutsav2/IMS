@@ -1,4 +1,4 @@
-package com.example.ims.config;
+package com.example.IMS.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
