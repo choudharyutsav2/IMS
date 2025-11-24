@@ -30,11 +30,10 @@ public class ProductController {
         User user = userRepository.findById(userId.intValue()).orElse(null);
         if (user == null) {
             model.addAttribute("errorMsg", "User not found!");
-            return "redirect:/login.html"; // Redirect to login page if user not found
+            return "redirect:/login.html";
         }
-        model.addAttribute("user", user); // Add user to the model for display in the view
+        model.addAttribute("user", user);
 
-        // Fetch all categories and products
         List<String> categories = productService.getAllCategories();
         List<Product> products;
 
@@ -73,7 +72,7 @@ public class ProductController {
     @GetMapping("/adminPage/addProduct")
     public String openAddProductPage(Model model) {
         model.addAttribute("product", new Product());
-        return "addProduct"; // Resolves to templates/addProduct.html
+        return "addProduct";
     }
 
     // Action: Add Product

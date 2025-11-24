@@ -29,9 +29,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p.price FROM Product p WHERE p.productName = :productName")
     Double findpriceByproductName(String productName);
 
-    // ================================
-    // NEW: category distribution query
-    // ================================
+
     public static interface CategoryCount {
         String getCategory();
         Long getCount();

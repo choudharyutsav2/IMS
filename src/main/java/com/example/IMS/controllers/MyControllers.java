@@ -13,7 +13,6 @@ public class MyControllers {
     @Autowired
     private UserService userService;
 
-    // Provide a default user model for views that need it
     @ModelAttribute("user")
     public User userModel() {
         return new User();
@@ -21,7 +20,6 @@ public class MyControllers {
 
     @GetMapping("/regPage")
     public String openRegPage(Model model) {
-        // optional since @ModelAttribute above already provides "user"
         model.addAttribute("user", new User());
         return "register";
     }
@@ -63,7 +61,6 @@ public class MyControllers {
 
     @GetMapping("/register.html")
     public String showRegisterPage(Model model) {
-        // ensure model contains "user" so Thymeleaf's th:object="${user}" works
         model.addAttribute("user", new User());
         return "register"; // Thymeleaf resolves to templates/register.html
     }

@@ -1,49 +1,4 @@
-<!-- <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Your Cart</title>
-</head>
-<body>
 
-<h1>Your Cart</h1>
-
-<table>
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Category</th>
-            <th>Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="item : ${cartItems}">
-            <td th:text="${item.product.productName}"></td>
-            <td th:text="${item.product.category}"></td>
-            <td th:text="${item.product.price}"></td>
-               <td>
-                 <form th:action="@{'/cart/remove/' + ${item.id}}" method="post" onsubmit="return confirm('Remove this item?');">
-                     
-                     <input type="hidden" name="userId" th:value="${userId}" />
-                     <button type="submit">Remove</button>
-                 </form>
-               </td>
-        </tr>
-        
-    </tbody>
-</table>
-<br/>
-<div style="text-align: left; margin-top: 20px;">
-    <h4>Total Amount: ₹<span th:text="${total}">0</span></h4>
-</div>
-<br/>
-<a th:href="@{'/userPage?userId=' + ${userId}}">← Back to Products</a>
-
-</body>
-</html> -->
-
-
-<!-- //////////////////////////////////////////////////////////////////// -->
- <!-- //////////////////////////////////////////////////////////////////// -->
  <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -587,7 +542,7 @@ var totalAmount = /*[[${total}]]*/ 0;
 
 
 var options = {
-    "key": "rzp_test_w9MYEFY0kf2IcB", // Replace with your Razorpay key ID
+    "key": "rzp_test_w9MYEFY0kf2IcB",
     "amount": totalAmount * 100,
     "currency": "INR",
     "name": "VogueVault",

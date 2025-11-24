@@ -19,7 +19,6 @@ public class Product {
     private Double price;
     private Integer stock;
     
-    // Getters and Setters
     public Long getId() {
         return id;
     }
