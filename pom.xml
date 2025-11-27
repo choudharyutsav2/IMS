@@ -105,6 +105,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>VogueVault</finalName>
 		<plugins>
 
 			<!-- Ensure compiler produces Java 17 bytecode -->
