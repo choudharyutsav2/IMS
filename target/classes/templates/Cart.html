@@ -1,0 +1,571 @@
+
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Your Cart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-orange: #ff6b35;
+            --light-orange: #ff8c42;
+            --dark-orange: #e55a2b;
+            --accent-orange: #fff4f0;
+            --text-dark: #2c3e50;
+            --text-light: #6c757d;
+            --border-color: #e9ecef;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --success-green: #28a745;
+            --success-light: #34ce57;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fff4f0 0%, #ffe8e0 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .page-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .cart-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .cart-header {
+            background: linear-gradient(135deg, var(--primary-orange), var(--light-orange));
+            color: white;
+            padding: 1.5rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .table-responsive {
+            border-radius: 0 0 20px 20px;
+            overflow: hidden;
+        }
+
+        .cart-table {
+            margin-bottom: 0;
+            border: none;
+        }
+
+        .cart-table thead th {
+            background: var(--accent-orange);
+            color: var(--text-dark);
+            font-weight: 600;
+            border: none;
+            padding: 1.25rem 1.5rem;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cart-table tbody td {
+            padding: 1.5rem 1.5rem;
+            border-color: var(--border-color);
+            vertical-align: middle;
+            font-weight: 500;
+        }
+
+        .cart-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .cart-table tbody tr:hover {
+            background-color: var(--accent-orange);
+            transform: translateY(-1px);
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+
+        .product-category {
+            background: linear-gradient(135deg, var(--primary-orange), var(--light-orange));
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            text-transform: capitalize;
+        }
+
+        .product-price {
+            font-weight: 700;
+            color: var(--primary-orange);
+            font-size: 1.2rem;
+        }
+
+        .remove-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+        }
+
+        .remove-btn:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+            color: white;
+        }
+
+        .remove-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .total-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .total-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-top: 2px solid var(--accent-orange);
+        }
+
+        .total-label {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .total-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-orange), var(--light-orange));
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-link:hover {
+            background: linear-gradient(135deg, var(--dark-orange), var(--primary-orange));
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-link i {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        /* Pay Now Button Styles */
+        .pay-now-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--success-green), var(--success-light));
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 200px;
+        }
+
+        .pay-now-btn:hover {
+            background: linear-gradient(135deg, #218838, var(--success-green));
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4);
+            color: white;
+        }
+
+        .pay-now-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .pay-now-btn i {
+            margin-right: 0.75rem;
+            font-size: 1.3rem;
+            animation: pulse 2s infinite;
+        }
+
+        .pay-now-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .pay-now-btn:hover::before {
+            left: 100%;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Disabled state for empty cart */
+        .pay-now-btn:disabled {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .pay-now-btn:disabled:hover {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .pay-now-btn:disabled i {
+            animation: none;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        .empty-cart i {
+            font-size: 4rem;
+            color: var(--primary-orange);
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .empty-cart h3 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem 0.5rem;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .cart-header {
+                padding: 1rem 1.5rem;
+            }
+
+            .cart-table thead th,
+            .cart-table tbody td {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .total-section {
+                padding: 1.5rem;
+            }
+
+            .total-wrapper {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .product-category {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.6rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .back-link,
+            .pay-now-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .cart-table {
+                font-size: 0.85rem;
+            }
+
+            .cart-table thead th {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .cart-table tbody td {
+                padding: 1rem 0.5rem;
+            }
+
+            .remove-btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .pay-now-btn {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Animation for page load */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cart-container,
+        .total-section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .page-header {
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        .action-buttons {
+            animation: fadeInUp 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-shopping-cart"></i>
+                Your Cart
+            </h1>
+            <p class="page-subtitle">Review your selected items before checkout</p>
+        </div>
+
+        <!-- Cart Items -->
+        <div class="cart-container">
+            <div class="cart-header">
+                <i class="fas fa-list"></i>
+                Cart Items
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table cart-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-box"></i> Product</th>
+                            <th><i class="fas fa-tags"></i> Category</th>
+                            <th><i class="fas fa-rupee-sign"></i> Price</th>
+                            <th><i class="fas fa-cog"></i> Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${cartItems}">
+                            <td>
+                                <div class="product-name" th:text="${item.product.productName}">Sample Product</div>
+                            </td>
+                            <td>
+                                <span class="product-category" th:text="${item.product.category}">Electronics</span>
+                            </td>
+                            <td>
+                                <span class="product-price">₹<span th:text="${item.product.price}">999</span></span>
+                            </td>
+                            <td>
+                                <form th:action="@{'/cart/remove/' + ${item.id}}" method="post" 
+                                      onsubmit="return confirm('Are you sure you want to remove this item from your cart?');" 
+                                      style="display: inline;">
+                                    <input type="hidden" name="userId" th:value="${userId}" />
+                                    <button type="submit" class="btn remove-btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                        Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- Empty Cart Message (if no items) -->
+                <div class="empty-cart" th:if="${#lists.isEmpty(cartItems)}">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Your cart is empty</h3>
+                    <p>Add some products to get started!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Section -->
+        <div class="total-section">
+            <div class="total-wrapper">
+                <div class="total-label">
+                    <i class="fas fa-calculator"></i>
+                    Total Amount:
+                </div>
+                <div class="total-amount">
+                    ₹<span th:text="${total}">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a th:href="@{'/userPage?userId=' + ${userId}}" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Continue Shopping
+            </a>
+            
+            <button id="rzp-button1" class="pay-now-btn" th:disabled="${#lists.isEmpty(cartItems)}">
+                <i class="fas fa-credit-card"></i>
+                Pay Now
+            </button>
+        </div>
+    </div>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    let userId = [[${userId}]];
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script th:inline="javascript">
+var totalAmount = /*[[${total}]]*/ 0;
+
+
+var options = {
+    "key": "rzp_test_w9MYEFY0kf2IcB",
+    "amount": totalAmount * 100,
+    "currency": "INR",
+    "name": "VogueVault",
+    "description": "Fashion Purchase",
+    "handler": function (response){
+        alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+        window.location.href = "/cart/payment-success?userId=" + userId;
+    },
+    "prefill": {
+        "name": "Customer Name",
+        "email": "customer@example.com"
+    },
+    "theme": {
+        "color": "#F37254"
+    }
+};
+document.getElementById('rzp-button1').onclick = function(e){
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+
+
+</body>
+</html>

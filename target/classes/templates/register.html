@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VogueVault Registration</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffcc00, #ff3300);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80%;
+            max-width: 1200px;
+        }
+
+        /* Image Section */
+        .image-section {
+            flex: 1;
+            position: relative;
+            margin-right: 20px;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slides {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slides img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        /* Registration Section Styles */
+        .registration-section {
+            background: rgba(50, 50, 50, 0.95);
+            border-radius: 15px;
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .registration-section h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 28px;
+            color: #ffcc00;
+        }
+
+        .registration-section p {
+            text-align: center;
+            color: #eee;
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+
+        /* Form Styles */
+        .registration-form label {
+            color: #ffcc00;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .registration-form .form-control {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .registration-form .form-control:focus {
+            border-color: #ffcc00;
+            box-shadow: 0px 0px 5px rgba(255, 204, 0, 0.8);
+        }
+
+        .registration-form button {
+            background: linear-gradient(135deg, #ffcc00, #ff3300);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+
+        .registration-form button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Messages */
+        .success-message, .error-message {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            color: #33cc33;
+        }
+
+        .error-message {
+            color: #ff3300;
+        }
+
+        /* Login Link */
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        let slideIndex = 0;
+
+        function showSlides() {
+            const slides = document.getElementsByClassName("slides");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 3000); // Change image every 3 seconds
+        }
+
+        window.onload = function () {
+            showSlides();
+        };
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="image-section">
+        <div class="slideshow-container">
+            <div class="slides">
+                <img src="./css/shirtt.png" alt="Shirt 1">
+            </div>
+            <div class="slides">
+                <img src="./css/shirtt2.png" alt="Shirt 2">
+            </div>
+            <div class="slides">
+                <img src="./css/shirt3.png" alt="Shirt 3">
+            </div>
+        </div>
+    </div>
+
+    <div class="registration-section">
+        <h2>Register for VogueVault</h2>
+        <p><b>Join VogueVault to manage your dress inventory effortlessly!</b></p>
+
+        <div class="success-message" id="success-message" style="display:none;"></div>
+
+        <div class="error-message" id="error-message" style="display:none;"></div>
+
+        <!-- <form action="/regForm" method="POST" class="registration-form">
+            <div class="input-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" class="form-control" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" class="form-control" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Create Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter a strong password" class="form-control" required>
+            </div>
+            <button type="submit">Register Now</button>
+        </form> -->
+
+        <form th:action="@{/regForm}" th:object="${user}" method="post" class="registration-form">
+            <div class="input-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" th:field="*{name}" placeholder="Enter your full name" class="form-control" required>
+            </div>
+
+            <div class="input-group">
+                        <label for="email">Email Address</label>
+                <input type="email" id="email" th:field="*{email}" placeholder="Enter your email address" class="form-control" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Create Password</label>
+                <input type="password" id="password" th:field="*{password}" placeholder="Enter a strong password" class="form-control" required>
+            </div>
+<!-- ✅ Why *{} is used: -->
+<!-- *{...} means:
+👉 "Bind this field to the object defined in th:object for this form."
+
+So when you write:
+<form th:object="${user}">
+    <input th:field="*{name}" />
+</form>
+You’re telling Thymeleaf:
+
+“This input should be bound to user.name” -->
+
+            <button type="submit">Register Now</button>
+        </form>
+
+        <div class="login-link">
+            <p>Already have an account? <a href="./login.html"><b>Log in here</b></a>.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

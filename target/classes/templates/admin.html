@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - VogueVault</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #FFCC00, #FF3333); color: #333; }
+        header { display: flex; justify-content: space-between; align-items: center; background: #FF6600; color: white; padding: 20px 30px; }
+        header h1 { font-size: 2rem; font-weight: bold; }
+        .navbar a { color: white; text-decoration: none; font-size: 1rem; padding: 8px 15px; border-radius: 5px; transition: background 0.3s; }
+        .navbar a:hover { background-color: #FF4D00; }
+        .container { max-width: 1200px; margin: 30px auto; background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; }
+        .actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 20px; }
+        .actions button { background: linear-gradient(45deg, #FF6600, #FFCC00); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: background 0.3s; }
+        .actions button:hover { background: linear-gradient(45deg, #FF4D00, #FF6600); }
+        #pieChartContainer { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 30px; flex-wrap: wrap; }
+        .pie-card { background-color: #f9f9f9; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); width: 320px; font-family: Arial, sans-serif; }
+        .pie-card h3 { font-size: 18px; margin-bottom: 15px; color: #333; }
+        .legend-item { display: flex; align-items: center; margin-bottom: 12px; }
+        .legend-item span { width: 20px; height: 20px; border-radius: 50%; margin-right: 10px; }
+        .legend-item p { font-size: 14px; margin: 0; color: #555; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table th, table td { padding: 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        table th { background-color: #FF6600; color: white; text-transform: uppercase; }
+        table tr:hover { background-color: #f9f9f9; }
+        table td button { background-color: #28a745; border: none; padding: 8px 12px; color: white; border-radius: 6px; transition: background 0.3s; }
+        table td button:hover { background-color: #218838; }
+        select { padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd; background-color: #f9f9f9; cursor: pointer; }
+        select:focus { border-color: #FF6600; outline: none; }
+        .flash-success { background:#d4edda;color:#155724;padding:10px;border-radius:6px;margin-bottom:12px }
+        .flash-error { background:#f8d7da;color:#721c24;padding:10px;border-radius:6px;margin-bottom:12px }
+        @media (max-width: 900px) {
+            #pieChartContainer { flex-direction: column; align-items: stretch; }
+            .pie-card { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>VogueVault</h1>
+    <nav class="navbar">
+        <a href="./login.html">Log Out</a>
+    </nav>
+</header>
+
+<div class="container">
+    <!-- Flash messages (set via RedirectAttributes in controller) -->
+    <div th:if="${successMsg}" class="flash-success" th:text="${successMsg}"></div>
+    <div th:if="${errorMsg}" class="flash-error" th:text="${errorMsg}"></div>
+
+    <div class="actions">
+        <button onclick="window.location.href='/adminPage/addProduct'">Add Product</button>
+
+        <select id="categoryFilter" onchange="filterByCategory()">
+            <option value="all" th:selected="${selectedCategory == null || selectedCategory == 'all'}">All Categories</option>
+            <option th:each="category : ${categories}"
+                    th:value="${category}"
+                    th:text="${category}"
+                    th:selected="${selectedCategory == category}"></option>
+        </select>
+    </div>
+
+
+
+    <!-- Product Table -->
+    <table>
+        <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="products : ${products}">
+            <td th:text="${products.id}"></td>
+            <td th:text="${products.productName}"></td>
+            <td th:text="${products.category}"></td>
+            <td th:text="${products.price}"></td>
+            <td th:text="${products.stock}"></td>
+            <td>
+                <a th:href="@{'/adminPage/update/' + ${products.id}}"><button>Edit</button></a>
+
+                <!-- POST form for delete (CSRF-safe: only renders token when _csrf exists) -->
+                <form th:action="@{'/adminPage/delete/' + ${products.id}}" method="post" style="display:inline">
+                    <div th:if="${_csrf != null}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    </div>
+                    <button type="submit" style="background-color: #dc3545; border: none; padding: 8px 12px; color: white; border-radius:6px; cursor:pointer">
+                        Remove product from Stock
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Utility: update chart with server data
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    const COLORS = ['#FFCC00', '#FF3333', '#FF6600', '#FF4D00', '#FF9966', '#FFB366', '#66CCFF', '#0099FF', '#0033FF', '#99FF99', '#9933FF'];
+
+    const pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: { labels: [], datasets: [{ data: [], backgroundColor: COLORS, hoverOffset: 8 }] },
+        options: {
+            responsive: true,
+            plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.parsed}` } } }
+        }
+    });
+
+    function buildChartFromData(categoryCounts) {
+        const labels = categoryCounts.map(c => c.category);
+        const data = categoryCounts.map(c => c.count);
+        pieChart.data.labels = labels;
+        pieChart.data.datasets[0].data = data;
+        pieChart.update();
+    }
+
+    async function fetchCategoryStatsAndUpdate() {
+        try {
+            const resp = await fetch('/api/admin/category-stats', { method: 'GET' });
+            if (!resp.ok) throw new Error('Network response not OK: ' + resp.status);
+            const json = await resp.json();
+            const sanitized = (json || []).map(item => ({ category: item.category || 'Unknown', count: (item.count == null) ? 0 : Number(item.count) }));
+
+            // Ensure we show zero counts for categories present in dropdown but missing in results
+            const dropdownCats = Array.from(document.querySelectorAll('#categoryFilter option')).map(o => o.value).filter(v => v && v !== 'all');
+            dropdownCats.forEach(cat => {
+                if (!sanitized.find(s => s.category === cat)) {
+                    sanitized.push({ category: cat, count: 0 });
+                }
+            });
+
+            // Sort sanitized by category name to make legend stable
+            sanitized.sort((a,b) => a.category.localeCompare(b.category));
+            buildChartFromData(sanitized);
+        } catch (err) {
+            console.error('Failed to fetch category stats:', err);
+        }
+    }
+
+    // Polling interval (ms)
+    const POLL_MS = 5000;
+    fetchCategoryStatsAndUpdate();
+    setInterval(fetchCategoryStatsAndUpdate, POLL_MS);
+
+    function filterByCategory() {
+        const selectedCategory = document.getElementById('categoryFilter').value;
+        const url = new URL(window.location.href);
+        url.searchParams.set('category', selectedCategory);
+        window.location.href = url.toString();
+    }
+</script>
+</body>
+</html>
